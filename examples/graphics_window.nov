@@ -1,0 +1,35 @@
+#include <user/lib/gfx.nov>
+
+int main(int argc, char** argv) {
+    GfxWindow window;
+    GfxWindowOptions options;
+    GfxEvent event;
+    int running;
+
+    gfxInitWindowOptions(&options, 360, 220);
+    gfxWindowOptionsSetTitle(&options, "Nova Graphics API");
+    gfxWindowOptionsSetPosition(&options, 300, 170);
+
+    if (gfxOpen2DWindow(&window, &options) == 0) {
+        print("Could not open a compositor window");
+        println();
+        return 1;
+    }
+
+    running = 1;
+    while (running != 0) {
+        if (gfxWindowClear(&window, makeRgba(28, 54, 82, 255)) == 0 ||
+            gfxWindowDisplay(&window) != 0) {
+            running = 0;
+        }
+
+        if (gfxWindowPollEvent(&window, &event) != 0 &&
+            event.type == GFX_EVENT_CLOSE) {
+            running = 0;
+        }
+        sleep(16);
+    }
+
+    gfxClose2DWindow(&window);
+    return 0;
+}

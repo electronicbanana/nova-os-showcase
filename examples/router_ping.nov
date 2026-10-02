@@ -1,0 +1,58 @@
+#include <user/lib/stdlib.nov>
+#include <user/lib/router_protocol.nov>
+
+int guest_seconds() {
+    int now;
+    asm("rtc r0");
+    asm("map now, %r0");
+    return now;
+}
+
+int main(int argc, char** argv) {
+    char request[64];
+    char response[128];
+    int socketFd;
+    int requestSize;
+    int received;
+    int payloadSize;
+    char* payload;
+
+    requestSize = routerProtocolEncodeInt(
+        request, ROUTER_PROTOCOL_OP_PING, 0, guest_seconds());
+    socketFd = socketOpen(TCP, "127.0.0.1");
+    if (socketFd < 1) {
+        print("Could not connect to the host network router");
+        println();
+        return 1;
+    }
+
+    if (socketSend(socketFd, request, requestSize) != 0) {
+        print("Could not send the ping request");
+        println();
+        socketClose(socketFd);
+        return 1;
+    }
+
+    received = socketRecv(socketFd, response, 127);
+    socketClose(socketFd);
+    if (received < ROUTER_PROTOCOL_HEADER_SIZE ||
+        routerProtocolValid(response, received) == 0 ||
+        routerProtocolOpcode(response) != ROUTER_PROTOCOL_RESPONSE_DATA) {
+        print("The router returned an invalid response");
+        println();
+        return 1;
+    }
+
+    payloadSize = routerProtocolPayloadSize(response);
+    if (payloadSize > 99) {
+        print("The router response was too large");
+        println();
+        return 1;
+    }
+    payload = routerProtocolPayload(response);
+    payload[payloadSize] = 0;
+    print("Host router round trip: ");
+    print(payload);
+    println();
+    return 0;
+}

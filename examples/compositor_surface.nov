@@ -1,0 +1,44 @@
+#include <user/lib/gfx.nov>
+
+int main(int argc, char** argv) {
+    GfxSession session;
+    int surface;
+    int controlFd;
+
+    if (gfxOpenSession(&session) == 0) {
+        print("Could not connect to the graphics service");
+        println();
+        return 1;
+    }
+
+    surface = gfxCreateWindow(&session, 180, 72);
+    if (surface < 1) {
+        print("Could not create a graphics surface");
+        println();
+        gfxCloseSession(&session);
+        return 1;
+    }
+
+    controlFd = gfxSessionControlFd(&session);
+    gfxRegisterWindowAt(controlFd, surface, makeImageXY(230, 150),
+                        makeImageWH(180, 72));
+    gfxSetWindowClientColor(controlFd, surface, makeRgba(26, 48, 74, 255));
+    gfxSetWindowTitleChar(controlFd, surface, 0, 'N');
+    gfxSetWindowTitleChar(controlFd, surface, 1, 'o');
+    gfxSetWindowTitleChar(controlFd, surface, 2, 'v');
+    gfxSetWindowTitleChar(controlFd, surface, 3, 'a');
+    gfxSetWindowTitleChar(controlFd, surface, 4, ' ');
+    gfxSetWindowTitleChar(controlFd, surface, 5, 'A');
+    gfxSetWindowTitleChar(controlFd, surface, 6, 'P');
+    gfxSetWindowTitleChar(controlFd, surface, 7, 'I');
+    gfxFinishWindowTitle(controlFd, surface);
+
+    print("Compositor surface is visible for three seconds");
+    println();
+    sleep(3000);
+
+    gfxUnregisterWindow(controlFd, surface);
+    gfxDestroyWindow(&session, surface);
+    gfxCloseSession(&session);
+    return 0;
+}

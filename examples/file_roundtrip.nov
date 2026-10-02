@@ -1,0 +1,47 @@
+#include <user/lib/stdlib.nov>
+
+int main(int argc, char** argv) {
+    char message[] = "Nova file API round trip";
+    char buffer[64];
+    int fd;
+    int bytes;
+    int length;
+
+    length = strlen(message);
+    fd = open("/home/nova-showcase-note.txt",
+              O_CREAT | O_WRONLY | O_TRUNC, NVFS_PERM_600);
+    if (fd < 1) {
+        print("Could not create the demo file");
+        println();
+        return 1;
+    }
+
+    bytes = write(fd, message, length);
+    close(fd);
+    if (bytes != length) {
+        print("Could not write the complete demo file");
+        println();
+        return 1;
+    }
+
+    fd = open("/home/nova-showcase-note.txt", O_RDONLY, 0);
+    if (fd < 1) {
+        print("Could not reopen the demo file");
+        println();
+        return 1;
+    }
+
+    bytes = read(fd, buffer, 63);
+    close(fd);
+    if (bytes < 1) {
+        print("Could not read the demo file");
+        println();
+        return 1;
+    }
+
+    buffer[bytes] = 0;
+    print("Read back: ");
+    print(buffer);
+    println();
+    return 0;
+}
