@@ -1,3 +1,6 @@
+// Opens a session with the graphics service and creates a small window surface.
+// Registers the surface with the compositor, then sets its position and color.
+// Adds a title, leaves the surface visible briefly, and cleans up the session.
 #include <user/lib/gfx.nov>
 
 int main(int argc, char** argv) {

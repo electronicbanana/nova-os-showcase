@@ -1,3 +1,6 @@
+// Builds a ping request using the public Nova router protocol.
+// Sends it over TCP to the host-side router at 127.0.0.1 and checks the reply.
+// Prints the returned payload to demonstrate a guest-to-host network round trip.
 #include <user/lib/stdlib.nov>
 #include <user/lib/router_protocol.nov>
 

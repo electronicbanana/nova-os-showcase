@@ -1,3 +1,6 @@
+// Opens a high-level 3D graphics window and creates a colored cube object.
+// Builds model, view, and perspective transforms, then rotates the cube.
+// Draws frames until the window receives a close event, then releases resources.
 #include <user/lib/gfx.nov>
 
 #define DEMO_FOV 1.0471976

@@ -1,3 +1,6 @@
+// Creates a small text file in the user's home directory and writes a message.
+// Closes and reopens the file, reads the message back, and prints the result.
+// Uses a restricted file mode for the demo file and checks each operation.
 #include <user/lib/stdlib.nov>
 
 int main(int argc, char** argv) {

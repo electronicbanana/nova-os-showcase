@@ -1,3 +1,6 @@
+// Opens a high-level 2D graphics window through the Nova graphics library.
+// Clears and presents the window repeatedly while checking for close events.
+// Closes the window cleanly when the user exits the demo.
 #include <user/lib/gfx.nov>
 
 int main(int argc, char** argv) {

@@ -1,0 +1,17 @@
+; Minimal Nova assembly hello-world program.
+; Assumes the NOVOS user-program syscall convention.
+
+.text
+_start:
+    lea rax, 1          ; SYS_WRITE
+    lea rdi, 1          ; stdout
+    lea rsi, message    ; buffer address
+    lea rdx, 13          ; byte count, excluding the NUL terminator
+    syscall
+
+    lea rax, 60         ; SYS_EXIT
+    lea rdi, 0           ; exit status
+    syscall
+
+.data
+db message "Hello, Nova!\n"

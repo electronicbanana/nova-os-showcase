@@ -68,4 +68,4 @@ Arguments are shown in call order. Pointer arguments refer to Nova user memory. 
 
 ## Examples
 
-The Nova programs in [`../examples/`](../examples/) demonstrate file operations, network requests, and graphics APIs that communicate with the compositor.
+The Nova programs in [`../nova-examples/`](../nova-examples/) demonstrate file operations, network requests, and graphics APIs that communicate with the compositor. The [`../nass-examples/`](../nass-examples/) directory contains a small NASS assembly example.
